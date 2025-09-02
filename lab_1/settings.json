@@ -1,0 +1,6 @@
+{
+    "alphabet": "абвгдеёжзийклмнопрстуфхцчшщъыьэюя",
+    "original_text": "task_1/original_text.txt",
+    "encrypted_text": "task_1/encrypted_text.txt",
+    "key": 5
+}
