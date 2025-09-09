@@ -95,7 +95,7 @@ def indentical_bits(sequence: str) -> float:
     
     return P
 
-def longest_seq(sequence: str) -> float:
+def longest_seq(sequence: str, p_i: str) -> float:
     """Функция реализует тест NIST на самую длинную последовательность единиц в блоке
     Args:
         sequence (str): Бинарная последовательность длиной 128
@@ -146,9 +146,9 @@ def longest_seq(sequence: str) -> float:
                 statistics[3] += 1
         
         xi_square = 0
-        p_i = [0.2148, 0.3672, 0.2305, 0.1875]
+        p_in = (int(p) for p in p_i)
                 
-        for v, p in zip(statistics, p_i):
+        for v, p in zip(statistics, p_in):
             xi_square += (v - 16 * p) ** 2 / (16 * p)
         
         P = (special.gammaincc(3/2, xi_square/2))

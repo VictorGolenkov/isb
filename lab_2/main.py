@@ -1,7 +1,7 @@
 import NIST_tests as tst
 import tools as t
 
-def gen_report(binary_sequence: str, filename: str, lan: str):
+def gen_report(binary_sequence: str, filename: str, lan: str, p_i: str):
     """Сохраняет в файле отчёт о проверке бинарной последовательности тестами NIST.
 
     Args:
@@ -17,7 +17,7 @@ def gen_report(binary_sequence: str, filename: str, lan: str):
             
             results = [tst.frequency_test(binary_sequence), 
                     tst.indentical_bits(binary_sequence), 
-                    tst.longest_seq(binary_sequence)]
+                    tst.longest_seq(binary_sequence, p_i)]
             
             print(f"Двоичная последовательность, сгенерированная с помощью стандартного ГСПЧ языка {lan}: ", file = f)
             print(binary_sequence, file = f)
@@ -61,8 +61,8 @@ def main():
     cpp_sequence = sequences["cpp"]
     java_sequence = sequences["java"]
     
-    gen_report(cpp_sequence, stgs["Report_C++"], stgs["lan_1"])
-    gen_report(java_sequence, stgs["Report_Java"], stgs["lan_2"])
+    gen_report(cpp_sequence, stgs["Report_C++"], stgs["lan_1"], stgs["p_i"])
+    gen_report(java_sequence, stgs["Report_Java"], stgs["lan_2"], stgs["p_i"])
         
 if __name__ == "__main__":
     main()
