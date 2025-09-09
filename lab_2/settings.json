@@ -1,0 +1,9 @@
+{
+    "gen_seq": "binary_sequences/generated_sequences.json",
+
+    "Lan_1_report": "Report_C++",
+    "Lan_2_report": "Report_Java",
+
+    "Lan_1": "C++",
+    "Lan_2": "Java"
+}
