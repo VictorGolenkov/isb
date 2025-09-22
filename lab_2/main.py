@@ -30,13 +30,14 @@ def gen_report(binary_sequence: str, filename: str, lan: str, p_i: str, len_of_b
                 
             check: list[bool] = []
             for P in results:
-                if P >= 0.01:
-                    check.append(True)
-                elif P < 0.01 or P >= 0:
-                    check.append(False)
-                else:
-                    raise ValueError("Получено некорректное значение P")
-                    
+                match P:
+                    case p if p >= 0.01:
+                        check.append(True)
+                    case p if 0 <= p < 0.01:
+                        check.append(False)
+                    case _:
+                        raise ValueError(f"Получено некорректное значение P: {P}")
+                                
             f.write("\n")
             if all(check):
                 print("Нулевая гипотеза принимается, альтернативная гипотеза опровергается:", file = f)
