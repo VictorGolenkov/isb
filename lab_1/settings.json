@@ -3,6 +3,7 @@
 
     "original_t1": "task_1/original_text.txt",
     "encrypted_t1": "task_1/encrypted_text.txt",
+    "decrypted_t1": "tasK_1/decrypted_text.txt",
     "key_path_t1": "task_1/key.txt",
     "key": 5,
 

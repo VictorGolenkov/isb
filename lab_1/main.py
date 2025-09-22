@@ -22,14 +22,15 @@ def dialog(original_path: str, decrypted_path: str):
     text = tools.read_txt(original_path)
     while(True):
         command = input("Введите команду: ")
-        if command == "stat":
-            t2.print_stat(text, len(text))
-        elif command == "exit":
-            return
-        elif len(command) == 2: 
-            text = text.replace(command[0], command[1])
-        else:
-            print("Ошибка: Такой команды не существует")
+        match command:
+            case "stat":
+                t2.print_stat(text, len(text))
+            case "exit":
+                return
+            case replace_cmd if len(replace_cmd) == 2:
+                text = text.replace(command[0], command[1])
+            case _:
+                print("Ошибка: Такой команды не существует")
         tools.save_txt(decrypted_path, text)
 
 def main():
@@ -39,28 +40,35 @@ def main():
     mode = args.mode
     
     settings = tools.read_json(path_to_stgs)
-        
-    if mode == "task_1":
-        
-        encrypted_text = t1.caesar_encrypt(
-            tools.read_txt(settings["original_t1"]),
-            settings["key"],
-            settings["alphabet"]
-        )
-        
-        # decrypted_text = t1.ceasar_decrypt(
-        #     encrypted_text,
-        #     settings["key"],
-        #     settings["alphabet"]
-        # )
-        
-        tools.save_txt(settings["encrypted_t1"], encrypted_text)
-        tools.save_txt(settings["key_path_t1"], str(settings["key"]))  
     
-    if mode == "task_2":
-        # dialog(settings["original_t2"], settings["decrypted_t2"])
-        t2_key = t2.create_key(tools.read_txt(settings["original_t2"]), tools.read_txt(settings["decrypted_t2"]))
-        tools.save_json(settings["key_path_t2"], t2_key)
+    match mode:
+        case "task_1_enc":
+            encrypted_text = t1.caesar_encrypt(
+                tools.read_txt(settings["original_t1"]),
+                settings["key"],
+                settings["alphabet"]
+            )
+            
+            tools.save_txt(settings["encrypted_t1"], encrypted_text)
+            tools.save_txt(settings["key_path_t1"], str(settings["key"]))  
+            
+        case "task_1_dec":
+            decrypted_text = t1.ceasar_decrypt(
+                tools.read_txt(settings["encrypted_t1"]),
+                settings["key"],
+                settings["alphabet"]
+            )    
+            
+            tools.save_txt(settings["decrypted_t1"], decrypted_text)   
+            tools.save_txt(settings["key_path_t1"], str(settings["key"])) 
+        
+        case "task_2":
+            dialog(settings["original_t2"], settings["decrypted_t2"])
+            t2_key = t2.create_key(tools.read_txt(settings["original_t2"]), tools.read_txt(settings["decrypted_t2"]))
+            tools.save_json(settings["key_path_t2"], t2_key)
+            
+        case _:
+            print("Такого режима не существует")
         
     
 if __name__ == "__main__":
