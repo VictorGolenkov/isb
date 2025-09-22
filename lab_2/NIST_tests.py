@@ -21,9 +21,6 @@ def frequency_test(sequence: str, N: int) -> float:
             raise ValueError("Пустая последовательность")
         if not all(bit in '01' for bit in sequence):
             raise ValueError("Последовательность должна содержать только '0' и '1'")
-        
-        if N < 128:
-                raise ValueError(f"Длина последовательности должна быть 128 бит, получено {N}")
     
         S_n = 0
         for bit in sequence:
@@ -60,9 +57,6 @@ def indentical_bits(sequence: str, N: int) -> float:
             raise ValueError("Пустая последовательность")
         if not all(bit in '01' for bit in sequence):
             raise ValueError("Последовательность должна содержать только '0' и '1'")
-        
-        if N != 128:
-                raise ValueError(f"Длина последовательности должна быть 128 бит, получено {N}")
     
         zeta = sum(int(bit) for bit in sequence) / N
         
@@ -106,9 +100,6 @@ def longest_seq(sequence: str, p_i: str, N: int, M: int) -> float:
             raise ValueError("Пустая последовательность")
         if not all(bit in '01' for bit in sequence):
             raise ValueError("Последовательность должна содержать только '0' и '1'")
-        
-        if N < 128:
-                raise ValueError(f"Длина последовательности должна быть 128 бит, получено {N}")
     
         num_of_blocks = N // M
         blocks = (sequence[i * M:(i + 1) * M] for i in range(num_of_blocks))
