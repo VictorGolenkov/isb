@@ -2,7 +2,7 @@ import math
 import numpy as np
 from scipy import special
 
-def frequency_test(sequence: str) -> float:
+def frequency_test(sequence: str, N: int) -> float:
     """Функция реализует частотный побитовый тест NIST 
 
     Args:
@@ -22,17 +22,12 @@ def frequency_test(sequence: str) -> float:
         if not all(bit in '01' for bit in sequence):
             raise ValueError("Последовательность должна содержать только '0' и '1'")
         
-        N = len(sequence)
-        
         if N < 128:
                 raise ValueError(f"Длина последовательности должна быть 128 бит, получено {N}")
     
         S_n = 0
         for bit in sequence:
-            if bit == '1':
-                S_n += 1
-            else:
-                S_n += -1
+            S_n += 1 if bit == '1' else -1
         S_n = S_n/np.sqrt(len(sequence))
     
         P = math.erfc(S_n / np.sqrt(2))
@@ -46,7 +41,7 @@ def frequency_test(sequence: str) -> float:
     
     return P
 
-def indentical_bits(sequence: str) -> float:
+def indentical_bits(sequence: str, N: int) -> float:
     """Функция реализует тест NIST на одинаковые подряд идущие биты
 
     Args:
@@ -65,8 +60,6 @@ def indentical_bits(sequence: str) -> float:
             raise ValueError("Пустая последовательность")
         if not all(bit in '01' for bit in sequence):
             raise ValueError("Последовательность должна содержать только '0' и '1'")
-        
-        N = len(sequence)
         
         if N != 128:
                 raise ValueError(f"Длина последовательности должна быть 128 бит, получено {N}")
@@ -95,7 +88,7 @@ def indentical_bits(sequence: str) -> float:
     
     return P
 
-def longest_seq(sequence: str, p_i: str) -> float:
+def longest_seq(sequence: str, p_i: str, N: int, M: int) -> float:
     """Функция реализует тест NIST на самую длинную последовательность единиц в блоке
     Args:
         sequence (str): Бинарная последовательность длиной 128
@@ -113,9 +106,6 @@ def longest_seq(sequence: str, p_i: str) -> float:
             raise ValueError("Пустая последовательность")
         if not all(bit in '01' for bit in sequence):
             raise ValueError("Последовательность должна содержать только '0' и '1'")
-        
-        N = len(sequence)
-        M = 8
         
         if N < 128:
                 raise ValueError(f"Длина последовательности должна быть 128 бит, получено {N}")
@@ -136,17 +126,18 @@ def longest_seq(sequence: str, p_i: str) -> float:
                 else:
                     curr_n = 0
                     
-            if max_n <= 1:
-                statistics[0] += 1
-            elif max_n == 2:
-                statistics[1] += 1
-            elif max_n == 3:
-                statistics[2] += 1
-            else:
-                statistics[3] += 1
+            match max_n:
+                case n if n <= 1:
+                    statistics[0] += 1
+                case 2:
+                    statistics[1] += 1
+                case 3:
+                    statistics[2] += 1
+                case _:
+                    statistics[3] += 1 
         
         xi_square = 0
-        p_in = (int(p) for p in p_i)
+        p_in = (float(p) for p in p_i)
                 
         for v, p in zip(statistics, p_in):
             xi_square += (v - 16 * p) ** 2 / (16 * p)

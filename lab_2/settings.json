@@ -1,5 +1,7 @@
 {
     "gen_seq": "binary_sequences/generated_sequences.json",
+    "len_of_seq": "128",
+    "len_of_block": "8",
 
     "Lan_1_report": "Report_C++",
     "Lan_2_report": "Report_Java",
