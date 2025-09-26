@@ -1,0 +1,9 @@
+{
+    "symmetric_key_file": "C:\\Users\\victo\\Desktop\\OIB\\isb\\lab_3\\keys\\symmetric_key.txt",
+    "private_key_file": "C:\\Users\\victo\\Desktop\\OIB\\isb\\lab_3\\keys\\private_key.pem",
+    "public_key_file": "C:\\Users\\victo\\Desktop\\OIB\\isb\\lab_3\\keys\\public_key.pem",
+
+    "plaintext_file": "C:\\Users\\victo\\Desktop\\OIB\\isb\\lab_3\\texts\\plaintext.txt",
+    "ciphertext_file": "C:\\Users\\victo\\Desktop\\OIB\\isb\\lab_3\\texts\\ciphertext.txt",
+    "decrypted_text_file": "C:\\Users\\victo\\Desktop\\OIB\\isb\\lab_3\\texts\\decrypted_text.txt"
+}
