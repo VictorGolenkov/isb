@@ -1,5 +1,7 @@
 from typing import Any
 
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
+
 from mode_1.asymmetric_cipher import RSAEncryption
 from mode_1.keys_generation import KeyGeneration
 from mode_1.keys_serialization import KeySerialization
@@ -36,7 +38,6 @@ class ModesManager:
         KeySerialization.serialize_public_key(public_key, settings["public_key_file"])
         
         print("Program completed successfully!")
-        return
         
         
     @staticmethod    
@@ -46,16 +47,26 @@ class ModesManager:
         Args:
             settings (dict[str, Any]): Contains settings, file paths, etc.
         """
+        print("Deserializing asymmeytic encryption private key.")
         private_key = KeySerialization.deserialize_private_key(settings["private_key_file"])
-        symmetric_enkey = FileWork.read_byte_txt(settings["symmetric_key_file"])
-        symmetric_key = RSAEncryption.RSA_decrypt(private_key, symmetric_enkey) # type: ignore
+        if not isinstance(private_key, RSAPrivateKey):
+            raise TypeError("Expected RSA private key, but got different type")
         
+        print("Deserializing symmetric encryption key..")
+        symmetric_enkey = FileWork.read_byte_txt(settings["symmetric_key_file"])
+        print("Decrypting symmetric encryption key...")
+        symmetric_key = RSAEncryption.RSA_decrypt(private_key, symmetric_enkey)
+        
+        print("Reading and encoding plaintext.")
         plaintext = FileWork.read_txt(settings["plaintext_file"])
         byte_plaintext = plaintext.encode()
         
+        print("Encrypting plaintext..")
         encoded_text = CAST5_encrypt(byte_plaintext, symmetric_key)
+        print("Saving ciphertext...")
         FileWork.save_byte_txt(settings["ciphertext_file"], encoded_text)
-        return
+        
+        print("Program completed successfully!")
     
     
     @staticmethod
@@ -65,14 +76,23 @@ class ModesManager:
         Args:
             settings (dict[str, Any]): Contains settings, file paths, etc.
         """
+        print("Deserializing asymmeytic encryption private key.")
         private_key = KeySerialization.deserialize_private_key(settings["private_key_file"])
+        if not isinstance(private_key, RSAPrivateKey):
+            raise TypeError("Expected RSA private key, but got different type")
+        print("Deserializing symmetric encryption key..")
         symmetric_enkey = FileWork.read_byte_txt(settings["symmetric_key_file"])
-        symmetric_key = RSAEncryption.RSA_decrypt(private_key, symmetric_enkey) # type: ignore
+        print("Decrypting symmetric encryption key...")
+        symmetric_key = RSAEncryption.RSA_decrypt(private_key, symmetric_enkey)
         
+        print("Reading ciphertext.")
         ciphertext = FileWork.read_byte_txt(settings["ciphertext_file"])
-        
+
+        print("Decrypting and decoding ciphertext..")
         byte_plaintext = CAST5_decrypt(ciphertext, symmetric_key)
         plaintext = byte_plaintext.decode("utf-8")
 
+        print("Saving decrypted text...")
         FileWork.save_txt(settings["decrypted_text_file"], plaintext)
-        return
+        
+        print("Program completed successfully!")

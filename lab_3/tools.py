@@ -1,4 +1,6 @@
 import json
+import os
+from pathlib import Path
 from typing import Any
 
 
@@ -107,4 +109,29 @@ class FileWork:
             with open(file_name, 'wb') as f:
                 f.write(data)
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"Error: {e}")     
+            
+            
+    @staticmethod
+    def is_file_exists(file_path: str):
+        """Checks if a file exists and can be accessed
+
+        Args:
+            file_path (str): File to check
+
+        Raises:
+            FileNotFoundError: File doesn't exists
+            ValueError: Is't a file
+            PermissionError: Cannot read file
+
+        Returns:
+            Path: _description_
+        """
+        path = Path(file_path)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {file_path}")
+        if not path.is_file():
+            raise ValueError(f"Path is not a file: {file_path}")
+        if not os.access(file_path, os.R_OK):
+            raise PermissionError(f"Cannot read file: {file_path}")
+        

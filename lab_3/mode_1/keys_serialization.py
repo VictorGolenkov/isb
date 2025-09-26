@@ -2,6 +2,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric.types import (PrivateKeyTypes,
                                                              PublicKeyTypes)
 
+from tools import FileWork
 
 
 class KeySerialization:
@@ -17,12 +18,11 @@ class KeySerialization:
             public_key: RSA public key object
             file_path: Path to save the public key
         """ 
-        with open(file_path, 'wb') as f:
-            pem_data = public_key.public_bytes(
+        pem_data = public_key.public_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo
             )
-            f.write(pem_data)
+        FileWork.save_byte_txt(file_path, pem_data)
 
 
     @staticmethod
@@ -36,8 +36,8 @@ class KeySerialization:
         Returns:
             RSA public key object
         """
-        with open(file_path, 'rb') as f:
-            public_key = serialization.load_pem_public_key(f.read())
+        pem_data = FileWork.read_byte_txt(file_path)
+        public_key = serialization.load_pem_public_key(pem_data)
         return public_key
 
 
@@ -50,12 +50,11 @@ class KeySerialization:
             private_key: RSA private key object
             file_path: Path to save the private key
         """ 
-        with open(file_path, 'wb') as f:
-            f.write(private_key.private_bytes(
+        pem_data = private_key.private_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PrivateFormat.TraditionalOpenSSL,
                 encryption_algorithm=serialization.NoEncryption())
-                )
+        FileWork.save_byte_txt(file_path, pem_data)
 
 
     @staticmethod
@@ -70,6 +69,6 @@ class KeySerialization:
         Returns:
             RSA private key object
         """
-        with open(file_path, 'rb') as f:
-            private_key = serialization.load_pem_private_key(f.read(),password=None,)
+        pem_data = FileWork.read_byte_txt(file_path)
+        private_key = serialization.load_pem_private_key(pem_data,password=None,)
         return private_key

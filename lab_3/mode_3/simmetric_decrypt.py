@@ -1,6 +1,6 @@
 from cryptography.hazmat.decrepit.ciphers.algorithms import CAST5
-from cryptography.hazmat.primitives.ciphers import Cipher, modes
 from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, modes
 
 
 def remove_padding(data: bytes, block_size: int = 8) -> bytes:
